@@ -10,10 +10,12 @@ if __name__ == "__main__":
     pykinect.initialize_libraries()
 
     # Modify camera configuration
+    # 设置相机参数
     device_config = pykinect.default_configuration
     device_config.color_resolution = pykinect.K4A_COLOR_RESOLUTION_1080P
     device_config.depth_mode = pykinect.K4A_DEPTH_MODE_NFOV_UNBINNED
-    # print(device_config)
+    print("device_config: ")
+    print(device_config)
 
     # Start device
     video_filename0 = "../data/output0.mkv"
@@ -37,10 +39,6 @@ if __name__ == "__main__":
 
         cv2.imshow('Image0', color_image0)
         cv2.imshow('Image1', color_image1)
-
-
-        # Plot the image
-
 
         # Press q key to stop
         if cv2.waitKey(1) == ord('q'):

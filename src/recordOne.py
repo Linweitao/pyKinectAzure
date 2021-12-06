@@ -13,7 +13,8 @@ if __name__ == "__main__":
     device_config = pykinect.default_configuration
     device_config.color_resolution = pykinect.K4A_COLOR_RESOLUTION_1080P
     device_config.depth_mode = pykinect.K4A_DEPTH_MODE_NFOV_UNBINNED
-    # print(device_config)
+    print("device_config: ")
+    print(device_config)
 
     # Start device
     video_filename0 = "../data/output0.mkv"
