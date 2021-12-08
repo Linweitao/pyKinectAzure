@@ -1,12 +1,12 @@
 import sys
 import cv2
 
-sys.path.insert(1, '../')
+sys.path.insert(1, '../../')
 import pykinect_azure as pykinect
 
 if __name__ == "__main__":
 
-    video_filename = "C:/Users/59335/Desktop/3dhuman/output.mkv"
+    video_filename = "../../data/outputR.mkv"
 
     # Initialize the library, if the library is not found, add the library path as argument
     pykinect.initialize_libraries(track_body=True)
@@ -23,8 +23,9 @@ if __name__ == "__main__":
     bodyTracker = pykinect.start_body_tracker(calibration=playback_calibration)
 
     cv2.namedWindow('Depth image with skeleton', cv2.WINDOW_NORMAL)
+    index=0
     while playback.isOpened():
-
+        index = index +1
         # Get camera capture
         capture = playback.update()
 
@@ -48,10 +49,10 @@ if __name__ == "__main__":
         # Draw the skeletons
         combined_image = body_frame.draw_bodies(color_image,pykinect.K4A_CALIBRATION_TYPE_COLOR)
 
-        cv2.imwrite("../pose_result/1_color_image.png", color_image)
-        cv2.imwrite("../pose_result/1_depth_color_image.png", depth_color_image)
-        cv2.imwrite("../pose_result/1_body_image_color.png", body_image_color)
-        cv2.imwrite("../pose_result/1_combined_image.png", combined_image)
+        cv2.imwrite("../../pose_result/out/"+str(index)+"_color_image.png", color_image)
+        cv2.imwrite("../../pose_result/out/"+str(index)+"_depth_color_image.png", depth_color_image)
+        cv2.imwrite("../../pose_result/out/"+str(index)+"_body_image_color.png", body_image_color)
+        cv2.imwrite("../../pose_result/out/"+str(index)+"_combined_image.png", combined_image)
 
         # Overlay body segmentation on depth image
         cv2.imshow('Depth image with skeleton', combined_image)

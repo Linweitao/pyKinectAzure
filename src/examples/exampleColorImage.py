@@ -1,7 +1,7 @@
 import sys
 import cv2
 
-sys.path.insert(1, '../')
+sys.path.insert(1, '../../')
 import pykinect_azure as pykinect
 
 if __name__ == "__main__":
@@ -11,27 +11,27 @@ if __name__ == "__main__":
 
 	# Modify camera configuration
 	device_config = pykinect.default_configuration
-	device_config.color_resolution = pykinect.K4A_COLOR_RESOLUTION_OFF
-	device_config.depth_mode = pykinect.K4A_DEPTH_MODE_WFOV_2X2BINNED
+	device_config.color_resolution = pykinect.K4A_COLOR_RESOLUTION_1080P
+	# print(device_config)
 
 	# Start device
 	device = pykinect.start_device(config=device_config)
 
-	cv2.namedWindow('Depth Image',cv2.WINDOW_NORMAL)
+	cv2.namedWindow('Color Image',cv2.WINDOW_NORMAL)
 	while True:
 
 		# Get capture
 		capture = device.update()
 
-		# Get the color depth image from the capture
-		ret, depth_image = capture.get_colored_depth_image()
+		# Get the color image from the capture
+		ret, color_image = capture.get_color_image()
 
 		if not ret:
 			continue
 			
 		# Plot the image
-		cv2.imshow('Depth Image',depth_image)
+		cv2.imshow("Color Image",color_image)
 		
 		# Press q key to stop
-		if cv2.waitKey(1) == ord('q'):  
+		if cv2.waitKey(1) == ord('q'): 
 			break

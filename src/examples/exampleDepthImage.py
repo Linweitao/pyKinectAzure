@@ -1,7 +1,7 @@
 import sys
 import cv2
 
-sys.path.insert(1, '../')
+sys.path.insert(1, '../../')
 import pykinect_azure as pykinect
 
 if __name__ == "__main__":
@@ -11,13 +11,11 @@ if __name__ == "__main__":
 
 	# Modify camera configuration
 	device_config = pykinect.default_configuration
-	device_config.color_resolution = pykinect.K4A_COLOR_RESOLUTION_1080P
-	device_config.depth_mode = pykinect.K4A_DEPTH_MODE_NFOV_UNBINNED
-	#print(device_config)
+	device_config.color_resolution = pykinect.K4A_COLOR_RESOLUTION_OFF
+	device_config.depth_mode = pykinect.K4A_DEPTH_MODE_WFOV_2X2BINNED
 
 	# Start device
-	video_filename = "C:/Users/59335/Desktop/3dhuman/output.mkv"
-	device = pykinect.start_device(0, config=device_config, record=True, record_filepath=video_filename)
+	device = pykinect.start_device(config=device_config)
 
 	cv2.namedWindow('Depth Image',cv2.WINDOW_NORMAL)
 	while True:

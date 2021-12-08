@@ -1,7 +1,7 @@
 import sys
 import cv2
 
-sys.path.insert(1, '../')
+sys.path.insert(1, '../../')
 import pykinect_azure as pykinect
 
 if __name__ == "__main__":

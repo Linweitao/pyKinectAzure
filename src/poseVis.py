@@ -3,10 +3,10 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import json
 
-index = 91
+index = 10
 
 p3ds = []
-out_file_json = "../pose_result/" + index + ".json"
+out_file_json = "../pose_result/R/" + str(index) + ".json"
 with open(out_file_json) as f:
     line = f.readline()
     data = json.loads(line)

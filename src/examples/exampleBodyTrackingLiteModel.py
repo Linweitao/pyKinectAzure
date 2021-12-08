@@ -1,7 +1,7 @@
 import sys
 import cv2
 
-sys.path.insert(1, '../')
+sys.path.insert(1, '../../')
 import pykinect_azure as pykinect
 
 if __name__ == "__main__":
@@ -13,13 +13,13 @@ if __name__ == "__main__":
 	device_config = pykinect.default_configuration
 	device_config.color_resolution = pykinect.K4A_COLOR_RESOLUTION_OFF
 	device_config.depth_mode = pykinect.K4A_DEPTH_MODE_WFOV_2X2BINNED
-	# print(device_config)
+	#print(device_config)
 
 	# Start device
 	device = pykinect.start_device(config=device_config)
 
 	# Start body tracker
-	bodyTracker = pykinect.start_body_tracker()
+	bodyTracker = pykinect.start_body_tracker(model_type=pykinect.K4ABT_DEFAULT_MODEL)
 
 	cv2.namedWindow('Depth image with skeleton',cv2.WINDOW_NORMAL)
 	while True:
@@ -41,7 +41,7 @@ if __name__ == "__main__":
 			
 		# Combine both images
 		combined_image = cv2.addWeighted(depth_color_image, 0.6, body_image_color, 0.4, 0)
-		# cv2.imshow('body_image_color', capture)
+
 		# Draw the skeletons
 		combined_image = body_frame.draw_bodies(combined_image)
 
