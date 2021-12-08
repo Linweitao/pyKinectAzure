@@ -6,6 +6,8 @@ import numpy as np
 # pointBelong为0时该点是A坐标系下的点，为1时该点是B坐标系下的点
 from matplotlib import pyplot as plt
 
+from pykinect_azure import pykinect, k4abt_body2D_t, k4abt_body_t, Body, Body2d
+
 
 def Camera3dTo3dCoordinateConversion(point3d, R, T, pointBelong=0):
     RT = np.concatenate((R, T), axis=-1)
@@ -22,11 +24,40 @@ def Camera3dTo3dCoordinateConversion(point3d, R, T, pointBelong=0):
     return point3d_Conversion
 
 
-def Camera3dTo2dCoordinateConversion(point3d, K):
+def Camera3dTo2dByK(point3d, K):
     z = point3d[2]
     point2d = np.dot(K, point3d) / z
     point2d = np.delete(point2d, -1)
     return point2d
+
+
+def Camera3dTo2dByKinectSDK(videofilename, pts3d):
+    # Initialize the library, if the library is not found, add the library path as argument
+    pykinect.initialize_libraries(track_body=True)
+
+    # Start playback
+    playback = pykinect.start_playback(videofilename)
+
+    playback_config = playback.get_record_configuration()
+    # print(playback_config)
+
+    playback_calibration = playback.get_calibration()
+
+    body2d_handle = k4abt_body2D_t()
+    body_handle = k4abt_body_t()
+    body = Body(body_handle)
+
+    pts2d = []
+    for pt3d in pts3d:
+        body.joints[0].position.x = pt3d[0]
+        body.joints[0].position.y = pt3d[1]
+        body.joints[0].position.z = pt3d[2]
+        for jointID, joint in enumerate(body.handle().skeleton.joints):
+            body2d_handle.skeleton.joints2D[jointID].position = playback_calibration.convert_3d_to_2d(joint.position, 1,
+                                                                                                      1)
+        body2d = Body2d(body2d_handle)
+        pts2d.append([body2d.joints[0].position.x, body2d.joints[0].position.y])
+    return pts2d
 
 
 def twoPoseVisCompare(out_file_json_L, out_file_json_R):
@@ -114,28 +145,7 @@ def twoPoseVisCompare(out_file_json_L, out_file_json_R):
 # twoPoseVisCompare(out_file_json_L,out_file_json_R)
 
 
-
 # point3d = np.array([0, 0, 0])
 # R = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
 # T = np.array([[0], [0], [0]])
 # print(Camera3dTo3dCoordinateConversion(point3d, R, T, 0))
-
-
-# [585.1353759765625, 434.5163879394531]
-# [-391.9105529785156, -120.29408264160156, 972.8924560546875]
-# position3d = np.array([519.243408203125, -184.34524536132812, 987.3510131835938])
-# filename = 'camera_calibration'
-# with open(filename) as file_obj:
-#     line = file_obj.readline()
-#     ccdata = json.loads(line)
-#     T = ccdata['T']
-#     R = ccdata['R']
-# position3d = Camera3dTo3dCoordinateConversion(position3d, R, T, 1)
-# print(position3d)
-# mtx1 = np.array(
-#     [[915.3875732421875, 0.0, 959.9261474609375], [0.0, 914.9352416992188, 549.2899169921875], [0.0, 0.0, 1.0]])
-# position2d = Camera3dTo2dCoordinateConversion(position3d, mtx1)
-# print(position2d)
-#
-# pts = np.array([-391.9105529785156, -120.29408264160156, 972.8924560546875])
-# print(Camera3dTo2dCoordinateConversion(pts, mtx1))

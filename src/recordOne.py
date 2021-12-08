@@ -11,6 +11,7 @@ if __name__ == "__main__":
 
     # Modify camera configuration
     device_config = pykinect.default_configuration
+    device_config.synchronized_images_only = True
     device_config.color_resolution = pykinect.K4A_COLOR_RESOLUTION_1080P
     device_config.depth_mode = pykinect.K4A_DEPTH_MODE_NFOV_UNBINNED
     print("device_config: ")
