@@ -1,6 +1,6 @@
 import sys
 import cv2
-
+import time
 sys.path.insert(1, '../')
 import pykinect_azure as pykinect
 
@@ -9,19 +9,26 @@ if __name__ == "__main__":
     # Initialize the library, if the library is not found, add the library path as argument
     pykinect.initialize_libraries()
 
-    # Modify camera configuration
-    # 设置相机参数
-    device_config = pykinect.default_configuration
-    device_config.color_resolution = pykinect.K4A_COLOR_RESOLUTION_1080P
-    device_config.depth_mode = pykinect.K4A_DEPTH_MODE_NFOV_UNBINNED
-    print("device_config: ")
-    print(device_config)
-
-    # Start device
-    video_filenameL = "../data/outputL.mkv"
+    # 设置右相机参数
+    device_configR = pykinect.default_configuration
+    device_configR.synchronized_images_only = True
+    device_configR.color_resolution = pykinect.K4A_COLOR_RESOLUTION_1080P
+    device_configR.wired_sync_mode = pykinect.K4A_WIRED_SYNC_MODE_SUBORDINATE
+    device_configR.depth_mode = pykinect.K4A_DEPTH_MODE_NFOV_UNBINNED
     video_filenameR = "../data/outputR.mkv"
-    deviceL = pykinect.start_device(0, config=device_config, record=True, record_filepath=video_filenameL)
-    deviceR = pykinect.start_device(1, config=device_config, record=True, record_filepath=video_filenameR)
+    deviceR = pykinect.start_device(1, config=device_configR, record=True, record_filepath=video_filenameR)
+    time.sleep(2)
+    # 设置左相机参数
+    device_configL = pykinect.default_configuration
+    device_configL.synchronized_images_only = True
+    device_configL.color_resolution = pykinect.K4A_COLOR_RESOLUTION_1080P
+    device_configL.wired_sync_mode = pykinect.K4A_WIRED_SYNC_MODE_MASTER
+    device_configL.depth_mode = pykinect.K4A_DEPTH_MODE_NFOV_UNBINNED
+    video_filenameL = "../data/outputL.mkv"
+    deviceL = pykinect.start_device(0, config=device_configL, record=True, record_filepath=video_filenameL)
+
+
+
 
     cv2.namedWindow('ImageL', cv2.WINDOW_NORMAL)
     cv2.namedWindow('ImageR', cv2.WINDOW_NORMAL)
