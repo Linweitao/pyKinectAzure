@@ -81,7 +81,7 @@ class Frame:
     def get_body_joints_CameraOfColor(self, dest_camera=K4A_CALIBRATION_TYPE_COLOR):
         num_bodies = self.get_num_bodies()
         joints = []
-        if num_bodies > 1:
+        if (num_bodies > 1) or (num_bodies == 0):
             return num_bodies, joints
 
         body2d_handle = k4abt_body2D_t()
