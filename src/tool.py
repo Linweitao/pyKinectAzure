@@ -60,11 +60,10 @@ def Camera3dTo2dByKinectSDK(videofilename, pts3d):
     return pts2d
 
 
-def twoPoseVisCompare(out_file_json_L, out_file_json_R):
+def twoPoseVisCompare(out_file_json_L, out_file_json_R,filename_calibration):
     p3do = []
     p3ds = []
-    filename = 'camera_calibration'
-    with open(filename) as file_obj:
+    with open(filename_calibration) as file_obj:
         line = file_obj.readline()
         ccdata = json.loads(line)
         T = ccdata['T']

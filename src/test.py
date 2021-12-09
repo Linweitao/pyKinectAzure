@@ -5,7 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 from pykinect_azure import pykinect, k4abt_body2D_t, k4abt_body_t, Body, Body2d
-from src.tool import Camera3dTo2dByK, Camera3dTo3dCoordinateConversion, Camera3dTo2dByKinectSDK
+from src.tool import Camera3dTo2dByK, Camera3dTo3dCoordinateConversion, Camera3dTo2dByKinectSDK, twoPoseVisCompare
 
 # [1101.110595703125, 325.7978515625]
 # [376.4811096191406, -596.359375, 2459.72314453125]
@@ -23,10 +23,15 @@ mtx1 = np.array(
 # position2d = Camera3dTo2dCoordinateConversion(position3d, mtx1)
 # print(position2d)
 
-camera = "L"
-video_filename = "../data/output" + camera + ".mkv"
+# camera = "L"
+# video_filename = "../data/output" + camera + ".mkv"
+#
+# pts3d = [[381.1416320800781, -59.284976959228516, 2450.524169921875],
+#          [376.26483154296875, -237.43312072753906, 2439.35205078125],
+#          [375.85040283203125, -380.1771545410156, 2437.73291015625]]
+# print(Camera3dTo2dByKinectSDK(video_filename, pts3d))
 
-pts3d = [[381.1416320800781, -59.284976959228516, 2450.524169921875],
-         [376.26483154296875, -237.43312072753906, 2439.35205078125],
-         [375.85040283203125, -380.1771545410156, 2437.73291015625]]
-print(Camera3dTo2dByKinectSDK(video_filename, pts3d))
+out_file_json_L = "../pose_result/L/120.json"
+out_file_json_R = "../pose_result/R/120.json"
+filename_calibration = "camera_calibration"
+twoPoseVisCompare(out_file_json_L,out_file_json_R,filename_calibration)
